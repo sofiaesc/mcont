@@ -1,29 +1,29 @@
-# La función recibe el intervalo de tiempo y la posición actual de los nodos.
+% La función recibe el intervalo de tiempo y la posición actual de los nodos.
 function dy = f(t,y)
 
-# DATOS:
-# Carga sinusoidal (inciso b):
+% DATOS:
+% Carga sinusoidal (inciso b):
 A = 1;
 fs = 2;
 phi = 0;
 senoidal = A*sin(2*pi*fs*t+phi);
 P = [0,senoidal];
 
-# Carga uniforme (inciso a):
+% Carga uniforme (inciso a):
 P = [0,1];
 
-# CONDICIONES INICIALES:
-# xi = [x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6,x7,y7,x8,y8,x9,y9,x10,y10,x11,y11,x12,y12,x13,y13,x14,y14];
+% CONDICIONES INICIALES:
+% xi = [x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6,x7,y7,x8,y8,x9,y9,x10,y10,x11,y11,x12,y12,x13,y13,x14,y14];
 xi = [0 0 40 0 0 10 10 10 30 10 40 10 0 20 10 20 20 20 30 20 40 20 10 30 20 30 30 30];
 
-# CONSTANTES RESORTES:
+% CONSTANTES RESORTES:
 k = [2 2 2 2 4 2 2 2 2 4 2 4 2 2 2 2 2 4 2 2 2 2 4 4 2];
 
-# MASAS:
+% MASAS:
 m = [1 1 1 1 1 1 1 2 1 2 1 2 2 2];
 
-# CÁLCULO DE FUERZAS:
-# Calculo una vez cada par y aplico Fij = -Fij
+% CÁLCULO DE FUERZAS:
+% Calculo una vez cada par y aplico Fij = -Fij
 F13 = fuerza(xi(1:2), xi(5:6), xi(1:2), y(2:3), k(1));
 F14 = fuerza(xi(1:2), xi(7:8), xi(1:2), y(4:5), k(2));
 F43 = fuerza(xi(7:8), xi(5:6), y(4:5), y(2:3), k(3));
@@ -50,23 +50,23 @@ F109 = fuerza(xi(19:20), xi(17:18), y(16:17), y(14:15), k(23));
 F1413 = fuerza(xi(27:28), xi(25:26), y(24:25), y(22:23), k(24));
 F149 = fuerza(xi(27:28), xi(17:18), y(24:25), y(14:15), k(25));
 
-# ARMADO DE SISTEMA DE ECUACIONES:
+% ARMADO DE SISTEMA DE ECUACIONES:
 dy = zeros(length(y),1);
 
-# Velocidades:
+% Velocidades:
 dy(1:25) = y(26:50);
-# Posiciones:
-#dy( = 1/m(1) * (F13 + F14); # es inmovil, no va en el sistema de ecuaciones.
-dy2(26) = 1/m(2) * (F25(1) + F26(1)); # solo se mueve en x.
-dy3(27:28) = 1/m(3) * (-F13 - F43 - F83 - F73);
-dy4(29:30) = 1/m(4) * (-F14 + F43 + F48);
-dy5(31:32) = 1/m(5) * (-F25 + F56 + F510);
-dy6(33:34) = 1/m(6) * (-F26 - F56 - F116 - F106);
-dy7(35:36) = 1/m(7) * (F73 - F87 + F712);
-dy8(37:38) = 1/m(8) * (F83 - F48 + F87 + F89 + F812);
-dy9(39:40) = 1/m(9) * (-F89 - F129 + F913 - F149 - F109);
-dy10(41:42) = 1/m(10) * (-F510 + F106 + F109 + F1011 + F1014);
-dy11(43:44) = 1/m(11) * (F116 - F1011 + F1114);
-dy12(45:46) = 1/m(12) * (-F712 -F812 + F129 + F1213);
-dy13(47:48) = 1/m(13) * (-F913 - F1213 - F1413 + P);
-dy14(49:50) = 1/m(14) * (F149 - F1014 - F1114 + F1413);
+% Posiciones:
+%dy( = 1/m(1) * (F13 + F14); % es inmovil, no va en el sistema de ecuaciones.
+dy(26) = 1/m(2) * (F25(1) + F26(1)); % solo se mueve en x.
+dy(27:28) = 1/m(3) * (-F13 - F43 - F83 - F73);
+dy(29:30) = 1/m(4) * (-F14 + F43 + F48);
+dy(31:32) = 1/m(5) * (-F25 + F56 + F510);
+dy(33:34) = 1/m(6) * (-F26 - F56 - F116 - F106);
+dy(35:36) = 1/m(7) * (F73 - F87 + F712);
+dy(37:38) = 1/m(8) * (F83 - F48 + F87 + F89 + F812);
+dy(39:40) = 1/m(9) * (-F89 - F129 + F913 - F149 - F109);
+dy(41:42) = 1/m(10) * (-F510 + F106 + F109 + F1011 + F1014);
+dy(43:44) = 1/m(11) * (F116 - F1011 + F1114);
+dy(45:46) = 1/m(12) * (-F712 -F812 + F129 + F1213);
+dy(47:48) = 1/m(13) * (-F913 - F1213 - F1413 + P);
+dy(49:50) = 1/m(14) * (F149 - F1014 - F1114 + F1413);
