@@ -1,6 +1,8 @@
 % La función recibe el intervalo de tiempo y la posición actual de los nodos.
 function dy = sistema(t,y)
 
+% ---------------------------------------------
+% -------------------DATOS---------------------
 % CONDICIONES INICIALES:
 % xi = [x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6,x7,y7,x8,y8,x9,y9,x10,y10,x11,y11,x12,y12,x13,y13,x14,y14];
 xi = [0 0 40 0 0 10 10 10 30 10 40 10 0 20 10 20 20 20 30 20 40 20 10 30 20 30 30 30];
@@ -19,7 +21,8 @@ f = 1; % frecuencia
 %P = [0,sin(f*t)];
 
 
-% CÁLCULO DE FUERZAS:
+% ---------------------------------------------
+% -------------CÁLCULO DE FUERZAS--------------
 % Calculo una vez cada par y aplico Fij = -Fij
 F13 = fuerza(xi(1:2), xi(5:6), xi(1:2), y(2:3), k(1));
 F14 = fuerza(xi(1:2), xi(7:8), xi(1:2), y(4:5), k(2));
@@ -47,7 +50,8 @@ F109 = fuerza(xi(19:20), xi(17:18), y(16:17), y(14:15), k(23));
 F1413 = fuerza(xi(27:28), xi(25:26), y(24:25), y(22:23), k(24));
 F149 = fuerza(xi(27:28), xi(17:18), y(24:25), y(14:15), k(25));
 
-% ARMADO DE SISTEMA DE ECUACIONES:
+% ---------------------------------------------
+% -------------ARMADO DEL SISTEMA--------------
 dy = zeros(length(y),1);
 
 % Velocidades:

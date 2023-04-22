@@ -4,14 +4,16 @@ clear all;
 % En este script, se resuelve el sistema con la ode y se obtiene el gif con
 % los resultados del ejercicio.
 
-% DATOS DE TIEMPO:
+% ---------------------------------------------
+% ---------------DATOS DE TIEMPO---------------
 tini = 0; % tiempo inicial
 tfin = 50; % tiempo final
 T = 0.1; % período
 t=tini:T:tfin-T; % intervalo de tiempo
 n = tfin/T; % número de muestras para usar en índices
 
-% CONDICIONES INICIALES:
+% ---------------------------------------------
+% ------------CONDICIONES INICIALES------------
 % Posición:
 % Para el nodo 1, el soporte es inmovil. Mantengo condiciones iniciales.
 % Para el nodo 2, el soporte es móvil en x. Mantengo condición inicial en y.
@@ -23,11 +25,12 @@ vi_0 = zeros(1,25);
 % Vector completo:
 y = [xi_0, vi_0];
 
-% RESOLUCIÓN DEL SISTEMA DE ECUACIONES:
+% ---------------------------------------------
+% -------------RESUELVO EL SISTEMA-------------
 [t,y] = ode23(@sistema,t,y);
 
-%------------------------------------------------------------
-% BARRA 13: NODOS 12 A 9
+% ---------------------------------------------
+% ------------FUERZA SOBRE BARRA 13------------
 for i = 1:n
    F(i) = norm(fuerza(xi_0(20:21),xi_0(14:15),y(i,20:21),y(i,14:15),2)); % obtengo magnitud
 endfor
@@ -41,7 +44,8 @@ title('Fuerza sobre Barra 13')
 xlabel('Tiempo (t)')
 ylabel('Fuerza (F)')
 
-% NODO 13:
+% ---------------------------------------------
+% -------------POSICIÓN DE NODO 13-------------
 figure(2)
 hold on
 grid on
@@ -58,13 +62,15 @@ title('Posicion Y Nodo 13')
 xlabel('Tiempo (t)');
 ylabel('Posición (y)');
 
-# DESPLAZAMIENTO MÁXIMO
-# obtengo diferencia entre coordenadas actuales e iniciales
+% ---------------------------------------------
+% -----------DESPLAZAMIENTO MÁXIMO-------------
+% obtengo diferencia entre coordenadas actuales e iniciales
 for i=1:25
   desplazamientos(:,i) = abs(y(:,i) - xi_0(i));
 endfor
-# obtengo magnitud sacando la norma entre el desplazamiento en x y en y
-magnitud_desplazamiento(:,1) = desplazamientos(:,1); # para el nodo 2, sólo tengo el desplazamiento en y
+
+% obtengo magnitud sacando la norma entre el desplazamiento en x y en y
+magnitud_desplazamiento(:,1) = desplazamientos(:,1); % para el nodo 2, sólo tengo el desplazamiento en y
 cont = 1;
 for i = 2:2:24
   cont += 1;
@@ -73,7 +79,8 @@ for i = 2:2:24
   endfor
 endfor
 
-# Obtengo el máximo desplazamiento de cada nodo con la función max:
+% Obtengo el máximo desplazamiento de cada nodo con la función max:
+% nodo2_y nodo3 nodo4 nodo5 nodo6 nodo7 nodo8 nodo9 nodo10 nodo11 nodo12 nodo13 nodo14
 max(magnitud_desplazamiento)
 
 # Grafico los desplazamientos:
@@ -85,7 +92,8 @@ xlabel('Tiempo (t)')
 ylabel('Desplazamiento')
 plot(t,magnitud_desplazamiento)
 
-% PLOT DE BARRAS:
+% ---------------------------------------------
+% ----------ANIMACIÓN DEL RETICULADO-----------
 figure(4)
 axis([-10 50 -10 40])
 hold on; grid on;
