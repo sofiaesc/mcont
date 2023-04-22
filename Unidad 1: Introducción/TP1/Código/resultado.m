@@ -68,7 +68,6 @@ ylabel('Posición (y)');
 for i=1:25
   desplazamientos(:,i) = abs(y(:,i) - xi_0(i));
 endfor
-
 % obtengo magnitud sacando la norma entre el desplazamiento en x y en y
 magnitud_desplazamiento(:,1) = desplazamientos(:,1); % para el nodo 2, sólo tengo el desplazamiento en y
 cont = 1;
@@ -79,11 +78,13 @@ for i = 2:2:24
   endfor
 endfor
 
-% Obtengo el máximo desplazamiento de cada nodo con la función max:
-% nodo2_y nodo3 nodo4 nodo5 nodo6 nodo7 nodo8 nodo9 nodo10 nodo11 nodo12 nodo13 nodo14
-max(magnitud_desplazamiento)
+% Armo la salida para el máximo desplazamiento de cada nodo con la función max:
+  [max n_max]=max(magnitud_desplazamiento);
+  max=max
+  t_max=n_max*T % multiplico por T para obtener tiempo en vez de número de muestras
+disp('      2(y)       3         4         5         6         7         8         9         10        11        12        13       14');
 
-# Grafico los desplazamientos:
+% Grafico los desplazamientos:
 figure(3)
 hold on
 grid on
@@ -91,9 +92,13 @@ title('Magnitud del desplazamiento de cada nodo')
 xlabel('Tiempo (t)')
 ylabel('Desplazamiento')
 plot(t,magnitud_desplazamiento)
+legStr = {'Nodo 2 (y)','Nodo 3','Nodo 4','Nodo 5','Nodo 6','Nodo 7','Nodo 8','Nodo 9','Nodo 10','Nodo 11','Nodo 12','Nodo 13','Nodo 14'};
+legend(legStr,'location','northwest')
 
 % ---------------------------------------------
 % ----------ANIMACIÓN DEL RETICULADO-----------
+
+% PLOT DE BARRAS:
 figure(4)
 axis([-10 50 -10 40])
 hold on; grid on;
@@ -129,6 +134,7 @@ h(23)=plot([y(1,16),y(1,14)],[y(1,17),y(1,15)],"k"); % Barra de 10 a 9
 h(24)=plot([y(1,24),y(1,22)],[y(1,25),y(1,23)],"k"); % Barra de 14 a 13
 h(25)=plot([y(1,24),y(1,14)],[y(1,25),y(1,15)],"k"); % Barra de 14 a 9
 
+% ANIMACIÓN:
 for i = 1:length(y)
 pause(0.01)
 set(h(1),'xdata',[0, y(i,2)],'ydata',[0, y(i,3)])

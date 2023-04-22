@@ -17,9 +17,8 @@ m = [1 1 1 1 1 1 1 2 1 2 1 2 2 2];
 P = [0,1];
 
 % Carga sinusoidal (inciso b):
-f = 1; % frecuencia
+f = 5; % frecuencia
 %P = [0,sin(f*t)];
-
 
 % ---------------------------------------------
 % -------------CÁLCULO DE FUERZAS--------------
@@ -52,7 +51,7 @@ F149 = fuerza(xi(27:28), xi(17:18), y(24:25), y(14:15), k(25));
 
 % ---------------------------------------------
 % -------------ARMADO DEL SISTEMA--------------
-dy = zeros(length(y),1);
+dy = zeros(length(y),1); % declaro mi sistema vacío
 
 % Velocidades:
 dy(1:25) = y(26:50);
