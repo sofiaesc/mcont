@@ -1,14 +1,15 @@
-clf;
 clc;
+clf;
 clear all;
-
 % En este script, se resuelve el sistema con la ode y se obtiene el gif con
 % los resultados del ejercicio.
 
 % DATOS DE TIEMPO:
-tini = 0;
-tfin = 50;
-t=tini:tfin;
+tini = 0; % tiempo inicial
+tfin = 50; % tiempo final
+T = 0.1; % período
+t=tini:T:tfin-T; % intervalo de tiempo
+n = tfin/T; % número de muestras para usar en índices
 
 % CONDICIONES INICIALES:
 % Posición:
@@ -23,51 +24,74 @@ vi_0 = zeros(1,25);
 y = [xi_0, vi_0];
 
 % RESOLUCIÓN DEL SISTEMA DE ECUACIONES:
-[t,y] = ode23(@f,t,y);
+[t,y] = ode23(@sistema,t,y);
 
 %------------------------------------------------------------
-% BARRA 13:
-for i = 1:tfin+1
-   F = fuerza(xi_0(20:21),xi_0(14:15),y(i,20:21),y(i,14:15),2);
-   F129_x(i)=F(1);
-   F129_y(i)=F(2);
-end
+% BARRA 13: NODOS 12 A 9
+for i = 1:n
+   F(i) = norm(fuerza(xi_0(20:21),xi_0(14:15),y(i,20:21),y(i,14:15),2)); % obtengo magnitud
+endfor
 
 figure(1)
 hold on
 grid on
-title('Barra 13 Fuerza')
-% Grafico fuerza en X para la barra:
-subplot(2,1,1)
-plot(t,F129_x)
+% Grafico fuerza en la barra:
+plot(t,F)
+title('Fuerza sobre Barra 13')
 xlabel('Tiempo (t)')
-ylabel('Fuerza de la barra en X')
-% Grafico fuerza en Y para la barra:
-subplot(2,1,2)
-plot(t,F129_y)
-xlabel('Tiempo (t)')
-ylabel('Fuerza de la barra en Y')
+ylabel('Fuerza (F)')
 
 % NODO 13:
 figure(2)
 hold on
 grid on
-title('Posicion X Nodo 6')
 % Grafico posición en X para el nodo:
 subplot(2,1,1)
-plot(t,y(:, 22));
-xlabel("Tiempo (t)");
-ylabel("Posición (x)");
+plot(t,y(1:n, 22));
+title('Posicion X Nodo 13')
+xlabel('Tiempo (t)');
+ylabel('Posición (x)');
 % Grafico posición en Y para el nodo:
 subplot(2,1,2)
-plot(t,y(:, 23));
-xlabel("Tiempo (t)");
-ylabel("Posición (y)");
+plot(t,y(1:n, 23));
+title('Posicion Y Nodo 13')
+xlabel('Tiempo (t)');
+ylabel('Posición (y)');
+
+# DESPLAZAMIENTO MÁXIMO
+# obtengo diferencia entre coordenadas actuales e iniciales
+for i=1:25
+  desplazamientos(:,i) = abs(y(:,i) - xi_0(i));
+endfor
+# obtengo magnitud sacando la norma entre el desplazamiento en x y en y
+magnitud_desplazamiento(:,1) = desplazamientos(:,1); # para el nodo 2, sólo tengo el desplazamiento en y
+cont = 1;
+for i = 2:2:24
+  cont += 1;
+  for j = 1:length(desplazamientos(:,i))
+    magnitud_desplazamiento(j,cont) = norm([desplazamientos(j,i) desplazamientos(j,i+1)]);
+  endfor
+endfor
+
+# Obtengo el máximo desplazamiento de cada nodo con la función max:
+max(magnitud_desplazamiento)
+
+# Grafico los desplazamientos:
+figure(3)
+hold on
+grid on
+title('Magnitud del desplazamiento de cada nodo')
+xlabel('Tiempo (t)')
+ylabel('Desplazamiento')
+plot(t,magnitud_desplazamiento)
 
 % PLOT DE BARRAS:
-figure(3)
+figure(4)
 axis([-10 50 -10 40])
 hold on; grid on;
+title('Movimiento del reticulado')
+xlabel('Posición (x)');
+ylabel('Posición (y)');
 
 %        [1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16  17  18  19  20  21  22  23  24  25]
 %inipos= [X2 X3 Y3 X4 Y4 X5 Y5 X6 Y6 X7 Y7 X8 Y8 X9 Y9 X10 Y10 X11 Y11 X12 Y12 X13 Y13 X14 Y14]
@@ -98,7 +122,7 @@ h(24)=plot([y(1,24),y(1,22)],[y(1,25),y(1,23)],"k"); % Barra de 14 a 13
 h(25)=plot([y(1,24),y(1,14)],[y(1,25),y(1,15)],"k"); % Barra de 14 a 9
 
 for i = 1:length(y)
-pause(0.2)
+pause(0.01)
 set(h(1),'xdata',[0, y(i,2)],'ydata',[0, y(i,3)])
 set(h(2),'xdata',[0, y(i,4)],'ydata',[0, y(i,5)])
 set(h(3),'xdata',[y(i,4),y(i,2)],'ydata',[y(i,5),y(i,3)])
@@ -124,4 +148,4 @@ set(h(22),'xdata',[y(i,16),y(i,24)],'ydata',[y(i,17),y(i,25)])
 set(h(23),'xdata',[y(i,16),y(i,14)],'ydata',[y(i,17),y(i,15)])
 set(h(24),'xdata',[y(i,24),y(i,22)],'ydata',[y(i,25),y(i,23)])
 set(h(25),'xdata',[y(i,24),y(i,14)],'ydata',[y(i,25),y(i,15)])
-end
+endfor

@@ -1,16 +1,5 @@
 % La función recibe el intervalo de tiempo y la posición actual de los nodos.
-function dy = f(t,y)
-
-% DATOS:
-% Carga sinusoidal (inciso b):
-A = 1;
-fs = 2;
-phi = 0;
-senoidal = A*sin(2*pi*fs*t+phi);
-P = [0,senoidal];
-
-% Carga uniforme (inciso a):
-P = [0,1];
+function dy = sistema(t,y)
 
 % CONDICIONES INICIALES:
 % xi = [x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6,x7,y7,x8,y8,x9,y9,x10,y10,x11,y11,x12,y12,x13,y13,x14,y14];
@@ -21,6 +10,14 @@ k = [2 2 2 2 4 2 2 2 2 4 2 4 2 2 2 2 2 4 2 2 2 2 4 4 2];
 
 % MASAS:
 m = [1 1 1 1 1 1 1 2 1 2 1 2 2 2];
+
+% Carga uniforme (inciso a):
+P = [0,1];
+
+% Carga sinusoidal (inciso b):
+f = 1; % frecuencia
+%P = [0,sin(f*t)];
+
 
 % CÁLCULO DE FUERZAS:
 % Calculo una vez cada par y aplico Fij = -Fij
